@@ -8,6 +8,8 @@ An advanced, production-grade AI Flashcard Generator application built with **St
 * **Smart Content Processing**: Deduplication, whitespace reduction, character repair, and recursive chunking.
 * **Agentic Flashcard Design**: Uses LangChain with structured output to discover Basic, Cloze, and Concept cards dynamically aligned to user-configured difficulties (Beginner, Intermediate, Advanced).
 * **Automatic Quality Correction**: Self-correcting review agent to fix grammatical slips, normalize cloze deletions, and prune redundant questions.
+* **Speed & Token Optimizations**: Optimized chunking splits (6000 characters by default) and optional quality reviews to scale speed and save input/output tokens.
+* **Local Usage Rate Limiter**: Persistent daily cap (2 generations per 24 hours) and yearly cap (120 generations per 365 days) logging to JSON.
 * **Interactive Editing Grid**: An in-browser editable spreadsheet to search, filter, tweak, delete, or append cards before exporting.
 * **Recall Study & Quiz Mode**: Study using interactive 3D HTML cards or test yourself with zero-cost multiple-choice exams.
 * **Anki Integration**: Direct exports to standard CSV or pre-formatted `.apkg` files with embedded card styling.
@@ -89,5 +91,6 @@ flashcard/
     ├── chunker.py              # Chunking routines
     ├── cleaner.py              # Cleanup routines
     ├── ocr.py                  # EasyOCR singleton
+    ├── rate_limiter.py         # Local JSON generation usage limits
     └── ui_styles.py            # CSS Styling & Session defaults
 ```

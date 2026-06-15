@@ -275,6 +275,14 @@ if st.button("🚀 Generate Flashcards", key="btn_generate_cards"):
     elif not st.session_state.openai_api_key:
         st.error("⚠️ OpenAI API Key is missing. Please set it in Settings page or your `.env` file first.")
     else:
+        # Check rate limits (Max 2 per day, 120 per year)
+        from utils.rate_limiter import check_and_update_rate_limit
+        allowed, limit_msg = check_and_update_rate_limit()
+        if not allowed:
+            st.error(limit_msg)
+            add_log("Generation aborted: Usage limits exceeded.")
+            st.stop()
+            
         st.session_state.logs = []
         add_log("Initiating Flashcard Generation pipeline...")
         
