@@ -198,8 +198,19 @@ def init_session_state():
     # Load dotenv from workspace root
     load_dotenv()
     
+    # Retrieve key from st.secrets or os.environ fallback
+    openai_key = ""
+    try:
+        if "OPENAI_API_KEY" in st.secrets:
+            openai_key = st.secrets["OPENAI_API_KEY"]
+    except Exception:
+        pass
+        
+    if not openai_key:
+        openai_key = os.getenv("OPENAI_API_KEY", "")
+        
     defaults = {
-        "openai_api_key": os.getenv("OPENAI_API_KEY", ""),
+        "openai_api_key": openai_key,
         "model_name": "gpt-4o-mini",
         "vision_model_name": "gpt-4o-mini",
         "chunk_size": 6000,

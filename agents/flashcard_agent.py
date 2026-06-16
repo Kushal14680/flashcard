@@ -44,12 +44,22 @@ def _call_llm_with_retry(llm, prompt_value):
 
 class FlashcardAgent:
     def __init__(self, api_key: Optional[str] = None, model_name: str = "gpt-4o-mini", temperature: float = 0.3):
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+        import streamlit as st
+        self.api_key = api_key
+        if not self.api_key:
+            try:
+                if "OPENAI_API_KEY" in st.secrets:
+                    self.api_key = st.secrets["OPENAI_API_KEY"]
+            except Exception:
+                pass
+        if not self.api_key:
+            self.api_key = os.getenv("OPENAI_API_KEY")
+            
         self.model_name = model_name
         self.temperature = temperature
         
         if not self.api_key:
-            raise ValueError("OpenAI API Key is missing. Please set it in Settings or your .env file.")
+            raise ValueError("OpenAI API Key is missing. Please set it in Settings, Streamlit secrets, or your .env file.")
 
     def generate_flashcards(
         self,
